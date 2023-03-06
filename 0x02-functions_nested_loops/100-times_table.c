@@ -1,14 +1,14 @@
 #include "main.h"
 
-
 	/**
-	 * print_times_table - prints the n times table, starting with 0
+	 * main - Entry point
+	 * print_times_table, prints the n times table, starting with 0
 	 * @n: number of the times table
+	 * Return: Always 0 (successi)
 	 */
 	void print_times_table(int n)
 	{
 		int i, j, k;
-
 
 		if (n >= 0 && n <= 15)
 		{
@@ -47,4 +47,3 @@
 			}
 		}
 	}
-}
