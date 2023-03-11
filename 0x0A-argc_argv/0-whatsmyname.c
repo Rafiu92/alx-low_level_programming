@@ -1,6 +1,6 @@
 #include <stdio.h>
-#ifndef "main_h"
-#define "main_h"
+#ifndef unused
+#define unused
 
 /**
  * main - prints the name of the program
@@ -9,8 +9,9 @@
  *
  * Return: Always 0 (Success)
  */
-int main(int argc __attribute_unused, char *argv[])
+int main(int argc __attribute__((__unused__)), char *argv[])
 {
 	printf("%s\n", *argv);
 	return (0);
 }
+#endif
