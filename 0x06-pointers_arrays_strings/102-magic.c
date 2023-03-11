@@ -1,10 +1,5 @@
 #include <stdio.h>
-/**
- * main - Entery point
- * program print a[2] = 98
- *
- * Return: 0 (success)
- */
+/* main - Entery point */
 int main(void)
 {
 	int n;
