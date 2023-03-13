@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "MAIN_H"
+#include "main.h"
 
 /**
  * *create_array - create an array of char,

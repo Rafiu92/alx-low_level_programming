@@ -1,4 +1,3 @@
-#include "MAIN_H"
 #ifndef "main.h"
 #define "main.h"
 int _putchar(char c);
