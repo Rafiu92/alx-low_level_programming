@@ -1,5 +1,5 @@
 #include <stdio.h>
-/* main - Entery point */
+
 int main(void)
 {
 	int n;
