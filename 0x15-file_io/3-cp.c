@@ -1,53 +1,82 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
 /**
- * main - copy file_from to file_to
- * @argc: arguments number
- * @argv: array of arguments
- *
- * Return: Always 0 (Success)
+ * op_file - open files and cheching
+ * @file_from: file_from argument
+ * @file_to: file_to argument
+ * @ff: ff arg
+ * @ft: ft arg
  */
-int main(int argc, char *argv[])
+void op_file(char *file_from, char *file_to, int ff, int ft)
 {
-	int fread, fwrite, r, m, n;
-	char buf[BUFSIZ];
-
-	if (argc != 3)
+	ff = open(file_from, O_RDONLY);
+	if (!ff)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
-	}
-	fread = open(argv[1], O_RDONLY);
-	if (fread < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 		exit(98);
 	}
-	fwrite = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	while ((r = read(fread, buf, BUFSIZ)) > 0)
+	ft = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	(void)ft;
+}
+/**
+ * cp_file - copies the content of a file to another file
+ * @file_from: name of the file
+ * @file_to: file destination
+ */
+void cp_file(char *file_from, char *file_to)
+{
+	int ff = 0, ft = 0;
+	ssize_t wr, rd;
+	char buffer[1024];
+
+	ff = open(file_from, O_RDONLY);
+	if (!ff)
 	{
-		if (fwrite < 0 || write(fwrite, buf, r) != r)
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
+		exit(98);
+	}
+	ft = open(file_to, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	while ((rd = read(ff, buffer, 1024)) > 0)
+	{
+		wr = write(ft, buffer, rd);
+		if ((wr < 0) || (wr != rd))
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			close(fread);
-			exit(99);
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
+			close(ff), exit(99);
 		}
 	}
-	if (r < 0)
+	if (rd < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 		exit(98);
 	}
-	m = close(fread);
-	n = close(fwrite);
-	if (m < 0 || n < 0)
+	if (close(ff) == -1)
 	{
-		if (m < 0)
-			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fread);
-		if (n < 0)
-			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fwrite);
-		exit(100);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", ff);
 	}
+	else
+		close(ff);
+	if (close(ft) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", ft), exit(100);
+	}
+	else
+	{
+		close(ft);
+	}
+}
+/**
+ * main - check the code
+ * @ac: number of args
+ * @av: args
+ * Return: Always 0.
+ */
+int main(int ac, char **av)
+{
+	if (ac != 3)
+	{
+		dprintf(2, "Usage: cp file_from file_to\n");
+		exit(97);
+	}
+	cp_file(av[1], av[2]);
 	return (0);
 }
